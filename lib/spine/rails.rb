@@ -1,12 +1,6 @@
-module Jquery
+module Spine
   module Rails
-    PROTOTYPE_JS = %w{prototype effects dragdrop controls}
-
-    if ::Rails.version < "3.1"
-      require 'jquery/rails/railtie'
-    else
-      require 'jquery/rails/engine'
-    end
-    require 'jquery/rails/version'
+    require 'spine/rails/railtie'
+    require 'spine/rails/version'
   end
 end

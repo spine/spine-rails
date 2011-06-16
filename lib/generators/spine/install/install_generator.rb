@@ -1,6 +1,6 @@
 require 'rails'
 
-module Jquery
+module Spine
   module Generators
     class InstallGenerator < ::Rails::Generators::Base
 

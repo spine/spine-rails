@@ -1,4 +1,4 @@
-module Jquery
+module Spine
   module Rails
     class Railtie < ::Rails::Railtie
       config.before_configuration do
