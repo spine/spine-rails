@@ -1,6 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'sinatra', '~> 1.0'
-gem 'shotgun', :group => :reloadable
-gem 'thin', :group => :reloadable
-gem 'json'
+# Specify your gem's dependencies in jquery-rails.gemspec
+gemspec
+# Rails is already being pulled in through gemspec
+# gem "rails", :git => "git://github.com/rails/rails.git"
+gem "rack", :git => "git://github.com/rack/rack.git"
+gem "sprockets", :git => "git://github.com/sstephenson/sprockets.git"
+gem "i18n", "0.6.0beta1"
