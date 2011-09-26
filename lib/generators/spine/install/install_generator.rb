@@ -6,7 +6,7 @@ module Spine
 
       desc "This generator installs Spine #{Spine::Rails::SPINE_VERSION}"
 
-      source_root File.expand_path('../../../../../vendor/assets/javascripts', __FILE__)
+      source_root File.expand_path('../../../../../app/assets/javascripts', __FILE__)
 
       def copy_spine
         say_status("copying", "Spine (#{Spine::Rails::SPINE_VERSION})", :green)
