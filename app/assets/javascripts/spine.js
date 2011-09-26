@@ -641,14 +641,14 @@
     return Object.prototype.toString.call(value) === '[object Array]';
   };
   isBlank = function(value) {
-    var val;
+    var key;
     if (!value) {
-      return false;
-    }
-    for (val in obj) {
       return true;
     }
-    return false;
+    for (key in value) {
+      return false;
+    }
+    return true;
   };
   makeArray = function(args) {
     return Array.prototype.slice.call(args, 0);
