@@ -163,7 +163,8 @@ if (!this.JSON) {
   this.JSON = {};
 }
 
-module.exports = JSON;
+if (this.module)
+  module.exports = JSON;
 
 (function () {
   
