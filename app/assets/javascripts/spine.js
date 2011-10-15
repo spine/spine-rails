@@ -358,7 +358,7 @@
       _results = [];
       for (key in atts) {
         value = atts[key];
-        _results.push(this[key] = value);
+        _results.push(typeof this[key] === 'function' ? this[key](value) : this[key] = value);
       }
       return _results;
     };
@@ -368,9 +368,17 @@
       _ref = this.constructor.attributes;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         key = _ref[_i];
-        result[key] = this[key];
+        if (key in this) {
+          if (typeof this[key] === 'function') {
+            result[key] = this[key]();
+          } else {
+            result[key] = this[key];
+          }
+        }
       }
-      result.id = this.id;
+      if (this.id) {
+        result.id = this.id;
+      }
       return result;
     };
     Model.prototype.eql = function(rec) {
@@ -665,7 +673,7 @@
   if (typeof module !== "undefined" && module !== null) {
     module.exports = Spine;
   }
-  Spine.version = '0.0.9';
+  Spine.version = '1.0.0';
   Spine.isArray = isArray;
   Spine.isBlank = isBlank;
   Spine.$ = $;
@@ -714,4 +722,5 @@
     return new this(a1, a2, a3, a4, a5);
   };
   Spine.Class = Module;
+  Spine.App = new Controller;
 }).call(this);
