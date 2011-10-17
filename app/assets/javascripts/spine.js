@@ -25,6 +25,12 @@
       }
       return this;
     },
+    one: function(ev, callback) {
+      return this.bind(ev, function() {
+        this.unbind(ev, arguments.callee);
+        return callback.apply(this, arguments);
+      });
+    },
     trigger: function() {
       var args, callback, ev, list, _i, _len, _ref;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -176,21 +182,24 @@
       }
     };
     Model.refresh = function(values, options) {
-      var record, _i, _len, _ref;
+      var record, records, _i, _len;
       if (options == null) {
         options = {};
       }
       if (options.clear) {
         this.records = {};
       }
-      _ref = this.fromJSON(values);
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        record = _ref[_i];
+      records = this.fromJSON(values);
+      if (!isArray(records)) {
+        records = [records];
+      }
+      for (_i = 0, _len = records.length; _i < _len; _i++) {
+        record = records[_i];
         record.newRecord = false;
         record.id || (record.id = guid());
         this.records[record.id] = record;
       }
-      this.trigger('refresh');
+      this.trigger('refresh', !options.clear && records);
       return this;
     };
     Model.select = function(callback) {
@@ -389,16 +398,16 @@
       var error;
       error = this.validate();
       if (error) {
-        this.trigger('error', this, error);
+        this.trigger('error', error);
         return false;
       }
-      this.trigger('beforeSave', this);
+      this.trigger('beforeSave');
       if (this.newRecord) {
         this.create();
       } else {
         this.update();
       }
-      this.trigger('save', this);
+      this.trigger('save');
       return this;
     };
     Model.prototype.updateAttribute = function(name, value) {
@@ -419,11 +428,11 @@
       return this.save();
     };
     Model.prototype.destroy = function() {
-      this.trigger('beforeDestroy', this);
+      this.trigger('beforeDestroy');
       delete this.constructor.records[this.id];
       this.destroyed = true;
-      this.trigger('destroy', this);
-      this.trigger('change', this, 'destroy');
+      this.trigger('destroy');
+      this.trigger('change', 'destroy');
       this.unbind();
       return this;
     };
@@ -460,16 +469,16 @@
     };
     Model.prototype.update = function() {
       var clone, records;
-      this.trigger('beforeUpdate', this);
+      this.trigger('beforeUpdate');
       records = this.constructor.records;
       records[this.id].load(this.attributes());
       clone = records[this.id].clone();
-      this.trigger('update', clone);
-      return this.trigger('change', clone, 'update');
+      clone.trigger('update');
+      return clone.trigger('change', 'update');
     };
     Model.prototype.create = function() {
       var clone, records;
-      this.trigger('beforeCreate', this);
+      this.trigger('beforeCreate');
       if (!this.id) {
         this.id = guid();
       }
@@ -477,8 +486,8 @@
       records = this.constructor.records;
       records[this.id] = this.dup(false);
       clone = records[this.id].clone();
-      this.trigger('create', clone);
-      return this.trigger('change', clone, 'create');
+      clone.trigger('create');
+      return clone.trigger('change', 'create');
     };
     Model.prototype.bind = function(events, callback) {
       var binder, unbinder;
@@ -496,11 +505,13 @@
       return binder;
     };
     Model.prototype.trigger = function() {
-      var _ref;
-      return (_ref = this.constructor).trigger.apply(_ref, arguments);
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      args.splice(1, 0, this);
+      return (_ref = this.constructor).trigger.apply(_ref, args);
     };
     Model.prototype.unbind = function() {
-      return this.trigger('unbind', this);
+      return this.trigger('unbind');
     };
     return Model;
   })();
@@ -508,7 +519,7 @@
     __extends(Controller, Module);
     Controller.include(Events);
     Controller.include(Log);
-    Controller.prototype.eventSplitter = /^(\w+)\s*(.*)$/;
+    Controller.prototype.eventSplitter = /^(\S+)\s*(.*)$/;
     Controller.prototype.tag = 'div';
     function Controller(options) {
       this.release = __bind(this.release, this);
@@ -722,5 +733,4 @@
     return new this(a1, a2, a3, a4, a5);
   };
   Spine.Class = Module;
-  Spine.App = new Controller;
 }).call(this);
