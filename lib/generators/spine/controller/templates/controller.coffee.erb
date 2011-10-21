@@ -1,4 +1,4 @@
-class App.<%= class_name %> extends Spine.Controller
+class <%= class_name %> extends Spine.Controller
   #elements:
   #  '.items': items
   #
@@ -8,3 +8,5 @@ class App.<%= class_name %> extends Spine.Controller
   constructor: ->
     super
     # ...
+    
+App.<%= class_name %> = <%= class_name %>

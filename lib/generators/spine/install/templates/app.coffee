@@ -6,8 +6,8 @@
 #= require spine/route
 #= require spine/rails
 
-#= require_self
 #= require_tree ./lib
+#= require_self
 #= require_tree ./models
 #= require_tree ./controllers
 #= require_tree ./views
@@ -17,7 +17,7 @@ class App extends Spine.Controller
     super
     
     # Initialize controllers:
-    #  @append(@items = new Items)
+    #  @append(@items = new App.Items)
     #  ...
     
     Spine.Route.setup()
