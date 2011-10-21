@@ -30,16 +30,20 @@ Then run the following commands:
 
 Running `rails g spine:new` will create the following directory structure:
   
-    app/assets/javascripts/models/
-    app/assets/javascripts/views/
-    app/assets/javascripts/controllers/
-    app/assets/javascripts/app.coffee
+    app/assets/javascripts/app/models/
+    app/assets/javascripts/app/views/
+    app/assets/javascripts/app/controllers/
+    app/assets/javascripts/app/index.coffee
     
-It will also create a top level `app.coffee` file to setup namespacing and initial controller instantiating.
+By default your application will be namespaced by the `app` directory. You can specify a different namespace with the `--app` option:
+
+    rails g spine:new --app foo_bar
+    
+Use the top-level level `index.coffee` file to setup namespacing and initial controller instantiation.
 
 ## Generators
 
-spine-rails provides 4 simple generators to help you get started:
+spine-rails provides three simple generators to help you get started:
 
 ### Model
 
@@ -67,7 +71,7 @@ The generator will create views in `hamljs`, `eco` or `ejs` format, depending on
 
 ## Example Usage
 
-Created a new rails 3.1 application called `blog`.
+Created a new Rails 3.1 application called `blog`.
 
     rails new blog
 
