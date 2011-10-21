@@ -1,4 +1,11 @@
 #= require_self
+#= require jquery
+#= require json2
+#= require spine
+#= require spine/manager
+#= require spine/ajax
+#= require spine/tmpl
+#= require spine/route
 #= require_tree ./models
 #= require_tree ./views
 #= require_tree ./controllers
