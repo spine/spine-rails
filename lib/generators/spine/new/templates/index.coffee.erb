@@ -1,4 +1,4 @@
-t#= require json2
+#= require json2
 #= require jquery
 #= require spine
 #= require spine/manager
@@ -6,7 +6,6 @@ t#= require json2
 #= require spine/route
 #= require spine/rails
 
-#= require_tree ./lib
 #= require_self
 #= require_tree ./models
 #= require_tree ./controllers
@@ -24,7 +23,6 @@ class <%= app_class %> extends Spine.Controller
 
 window.<%= app_class %> = <%= app_class %>
 
-
 # Helpers / shortcuts for controllers
 Spine.Controller.include
   # instead of JST['app/views/posts/show'] just write
@@ -39,4 +37,4 @@ Spine.Controller.include
     protoString = @constructor.toString().match(/^function ([^\(]+)/)[1] # Blogs
     areaName = protoString.toLowerCase() # blogs
     @renderView "#{areaName}/#{subViewName}", data # @htmlFor "blogs/show", data
-
+    
