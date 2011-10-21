@@ -96,13 +96,25 @@ Next navigate to [http://localhost:3000/posts](http://localhost:3000/posts), and
 
 Now you can use Spine:
 
-    var post = new App.Post({title:'Hello World!', content: 'Spine & Rails, sitting in a tree!'});
+    // Sends an AJAX POST to the server
+    var post = App.Post.create({
+      title: 'Hello World!', 
+      content: 'Spine & Rails, sitting in a tree!'
+    }); 
+
+    // => ID returned from Rails
+    post.id; 
     
-    post.save(); // Sends an AJAX POST to the server
+    // Sends AJAX PUT to the server
+    post.updateAttributes({title: 'Goodbye'});
     
-    post.id; // => ID returned from Rails
+Reload the page, then:
+
+    App.Post.fetch(); // Fetch all posts
     
-    post.updateAttributes({title: 'Goodbye'}); // Sends AJAX PUT to the server
+    App.Post.first().content;
+    
+For more information on how to integrate Spine with Rails, please see the [Rails guide](http://spinejs.com/docs/rails).
 
 ## Attributions
 
