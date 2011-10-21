@@ -103,3 +103,7 @@ Now you can use Spine:
     post.id; // => ID returned from Rails
     
     post.updateAttributes({title: 'Goodbye'}); // Sends AJAX PUT to the server
+
+## Attributions
+
+This plugin was made by [Alex MacCaw](http://alexmaccaw.co.uk) with major contributions from [Dmytrii Nagirniak](https://github.com/dnagir). It's under the same license as [Spine](http://spinejs.com) (MIT).
