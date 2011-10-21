@@ -1,0 +1,3 @@
+class App.<%= class_name %> extends Spine.Model
+  @configure "<%= class_name %>", <%= fields.map {|f| "\"#{f}\"" }.join(', ') %>
+  @extend Spine.Model.Ajax
