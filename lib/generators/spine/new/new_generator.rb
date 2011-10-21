@@ -47,7 +47,9 @@ module Spine
         end
        
         def add_spine_app_to_application
-          append_file "app/assets/javascripts/application.js", "//= require #{app_name}\n"
+          inject_into_file "app/assets/javascripts/application.js", :before => "//= require_tree" do
+            "//= require #{app_name}/index\n"
+          end
         end
       end
 
