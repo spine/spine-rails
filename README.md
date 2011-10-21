@@ -24,11 +24,11 @@ Then run the following commands:
 
     bundle install
     
-    rails generate spine:install
+    rails generate spine:new
 
 ### Layout and namespacing
 
-Running `rails g spine:install` will create the following directory structure:
+Running `rails g spine:new` will create the following directory structure:
   
     app/assets/javascripts/models/
     app/assets/javascripts/views/
@@ -82,7 +82,7 @@ Install the gem and generate resource.
     rails g scaffold Post title:string content:string
     rake db:migrate
     
-    rails g spine:install
+    rails g spine:new
     rails g spine:model Post title content
     rails g spine:controllers Posts
 
