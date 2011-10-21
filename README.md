@@ -1,12 +1,16 @@
 # Spine-Rails
 
-Easily setup and use Spine.js with Rails 3.1.
-
+Easily setup and use [Spine](http://spinejs.com) with Rails 3.1.
 
 ## Rails 3.1 setup
-This gem requires the use of rails 3.1, coffeescript and the new rails asset pipeline provided by sprockets.
 
-This gem vendors the latest version of spine.js for Rails 3.1 and greater. The files will be added to the asset pipeline and available for you to use. 
+This gem requires the use of [Rails 3.1](http://rubyonrails.org), [CoffeeScript](http://jashkenas.github.com/coffee-script/) and the new Rails asset pipeline provided by [Sprockets](http://getsprockets.org).
+
+This gem does two things:
+
+* Adds Spine to the asset pipeline, so you can easily require it in your applications: `//= require spine`
+    
+* Adds some Spine generators, so you can easily create Spine Models, Views and Controllers.
 
 For versions of Rails less than 3.1, it only provides the generator to install JavaScript file into public directory. 
 
@@ -19,57 +23,47 @@ In your Gemfile, add this line:
 Then run the following commands:
 
     bundle install
-    rails g spine:install
+    
+    rails generate spine:install
 
 ### Layout and namespacing
 
-Running `rails g spine:install` will create the following directory structure under `app/assets/javascripts/`:
+Running `rails g spine:install` will create the following directory structure:
   
-    models/
-    views/
-    controllers/
+    app/assets/javascripts/models/
+    app/assets/javascripts/views/
+    app/assets/javascripts/controllers/
+    app/assets/javascripts/app.coffee
     
-It will also create a toplevel `app.coffee` file to setup namespacing and initial requires.
+It will also create a top level `app.coffee` file to setup namespacing and initial controller instantiating.
 
 ## Generators
-spine-rails provides 4 simple generators to help you get started.
+
+spine-rails provides 4 simple generators to help you get started:
 
 ### Model
 
     rails g spine:model User email username full_name
     
-This generator creates a very minimal model inside `app/assets/javascript/models`. You need to provide the fileds to setup the model.
+This generator creates a very minimal model inside `app/assets/javascript/models`. You can optionally provide a list of attributes for the model.
 
 ### Controller
     
     rails g spine:controller Users
     
-This generator creates a minimal `Users` controller in `app/assets/javascripts/controllers` to get you started. No arguments requried.
+This generator creates a minimal `Users` controller in `app/assets/javascripts/controllers` to get you started. 
 
 ### View
 
-    rails g spine:view users index show edit
+    rails g spine:view users/index
     
-This generator creates 3 minimal views (index, show, edit) in the `app/assets/javascripts/views/users' directory.
-The first argument is the view folder to group the views by, the rest - view names themselves.
+This generates creates blank Spine views in the `app/assets/javascripts/views/users` directory. 
 
-The generator will create views in `hamljs`, `eco` or `ejs` format, dependeing on which gems are availale:
+The generator will create views in `hamljs`, `eco` or `ejs` format, depending on which gems are availale:
 
-- [rub-haml-js](https://github.com/dnagir/ruby-haml-js) - will use HAMLJS template
-- [eco](https://github.com/sstephenson/eco) - will use ECO template
-- otherwise - EJS.
-
-### Resource
-
-    rails g spine:resource User email username full_name
-
-This generator is the same as running:
-
-    rails g spine:model User email username full_name
-    rails g spine:controller
-    rails g spine:view index show edit
-
-This just saves you a bit of typing and time.
+- [eco](https://github.com/sstephenson/eco) - will use ECO templates
+- [rub-haml-js](https://github.com/dnagir/ruby-haml-js) - will use HAMLJS templates
+- otherwise, EJS templates will be used
 
 ## Example Usage
 
@@ -84,22 +78,23 @@ Edit your Gemfile and add
 Install the gem and generate resource.
 
     bundle install
+    
     rails g scaffold Post title:string content:string
     rake db:migrate
+    
     rails g spine:install
     rails g spine:resource Post title content
 
 You now have the default Spine data structures available to work with.
-Now, go to `http://localhost:3000/posts` and open up JavaScript console in the browser.
 
+Next navigate to [http://localhost:3000/posts](http://localhost:3000/posts), and open up the JavaScript console in the browser.
 
 Now you can use Spine:
 
-    var post1 = App.Post.init({title:'Hi Spine!', content: 'It is cool!'}); // creates a new post
-    post1.save(); // saves the post to the server
-    post.id; // => 1 or similar
-    // Similarly you can access Controllers
-    var posts = new App.Posts();
-    // Additionally, you can get quick access to the views from your controllers:
-    posts.generate('index', post1); # this will render html for the view 'views/blogs/index'
-
+    var post = new App.Post({title:'Hello World!', content: 'Spine & Rails, sitting in a tree!'});
+    
+    post.save(); // Sends an AJAX POST to the server
+    
+    post.id; // => ID returned from Rails
+    
+    post.updateAttributes({title: 'Goodbye'}); // Sends AJAX PUT to the server

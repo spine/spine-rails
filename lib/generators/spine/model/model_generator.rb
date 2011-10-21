@@ -11,7 +11,6 @@ module Spine
       def create_model
         template "model.coffee.erb", "app/assets/javascripts/models/#{file_name}.js.coffee"
       end
-
     end
   end
 end

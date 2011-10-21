@@ -9,7 +9,6 @@ module Spine
       def create_controller
         template "controller.coffee.erb", "app/assets/javascripts/controllers/#{file_name}.js.coffee"
       end
-
     end
   end
 end

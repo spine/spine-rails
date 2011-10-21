@@ -1,27 +1,25 @@
-#= require jquery
 #= require json2
+#= require jquery
 #= require spine
 #= require spine/manager
 #= require spine/ajax
 #= require spine/route
+#= require spine/rails
+
 #= require_self
+#= require_tree ./lib
 #= require_tree ./models
-#= require_tree ./views
 #= require_tree ./controllers
+#= require_tree ./views
 
-# Export the Models, Controllers into App object
-# TODO: Consider App.Models, App.Controllers, App.Views namespaces
+class App extends Spine.Controller
+  constructor: ->
+    super
+    
+    # Initialize controllers:
+    #  @append(@items = new Items)
+    #  ...
+    
+    Spine.Route.setup()
 
-window.App =
-  view: (name)-> JST["views/#{name}"]
-  render: (name, data)-> App.view(name)(data)
-
-# Helpers / shortcuts for controllers
-Spine.Controller.include
-  # this allows writing:
-  # `@generate 'show', post` instead of
-  # `JST['views/posts/show'](post)`
-  generate: (subViewName, data) ->
-    protoString = @constructor.toString().match(/^function ([^\(]+)/)[1]
-    areaName = protoString.toLowerCase()
-    App.render "#{areaName}/#{subViewName}", data
+window.App = App

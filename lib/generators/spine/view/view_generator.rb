@@ -14,10 +14,10 @@ module Spine
 
       # rails g spine:view Users index edit show
       def create_views
-        view_format = if defined?(::RubyHamlJs)
-          'hamljs'
-        elsif defined?(::Eco)
+        view_format = if defined?(::Eco)
           'eco'
+        elsif defined?(::RubyHamlJs)
+          'hamljs'
         else
           'ejs'
         end
@@ -26,7 +26,6 @@ module Spine
           template "view.#{view_format}.erb", "app/assets/javascripts/views/#{file_name}/#{view_name}.jst.#{view_format}", :view_name => view_name
         end
       end
-
     end
   end
 end
