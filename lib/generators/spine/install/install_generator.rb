@@ -21,7 +21,7 @@ module Spine
     else
       # Rails >= 3.1
 
-      class InstallGenerator < Rails::Generators::Base
+      class InstallGenerator < ::Rails::Generators::Base
         source_root File.expand_path("../templates", __FILE__)
     
         desc "This generator installs Spine #{Spine::Rails::SPINE_VERSION} as part of assets pipeline"
