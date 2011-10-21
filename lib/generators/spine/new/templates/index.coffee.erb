@@ -1,4 +1,4 @@
-#= require json2
+t#= require json2
 #= require jquery
 #= require spine
 #= require spine/manager
@@ -23,3 +23,20 @@ class <%= app_class %> extends Spine.Controller
     Spine.Route.setup()
 
 window.<%= app_class %> = <%= app_class %>
+
+
+# Helpers / shortcuts for controllers
+Spine.Controller.include
+  # instead of JST['app/views/posts/show'] just write
+  # @view('posts/show') => function that generates HTML
+  view: (name) -> JST["<%= app_name %>/views/#{name}"]
+
+  # @renderView('posts/show', post) => html string
+  renderView: (name, data) -> @view(name)(data)
+
+  # @htmlFor('show', post) => html string
+  htmlFor: (subViewName, data) ->
+    protoString = @constructor.toString().match(/^function ([^\(]+)/)[1] # Blogs
+    areaName = protoString.toLowerCase() # blogs
+    @renderView "#{areaName}/#{subViewName}", data # @htmlFor "blogs/show", data
+
