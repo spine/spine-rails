@@ -1,8 +1,9 @@
 require 'rails'
+require 'spine/generators'
 
 module Spine
   module Generators
-    class ViewGenerator < ::Rails::Generators::NamedBase
+    class ViewGenerator < Base
       source_root File.expand_path("../templates", __FILE__)
       desc "Generate a Spine views grouped by the name of the NAME argument"
 

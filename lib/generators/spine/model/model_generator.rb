@@ -1,4 +1,5 @@
 require 'rails'
+require 'spine/generators'
 
 module Spine
   module Generators
