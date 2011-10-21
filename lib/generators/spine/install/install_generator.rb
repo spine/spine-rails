@@ -32,7 +32,7 @@ module Spine
         end
         
         def app_class
-          app_class.camelize
+          app_name.camelize
         end
             
         def create_dir_layout

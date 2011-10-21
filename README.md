@@ -83,7 +83,8 @@ Install the gem and generate resource.
     rake db:migrate
     
     rails g spine:install
-    rails g spine:resource Post title content
+    rails g spine:model Post title content
+    rails g spine:controllers Posts
 
 You now have the default Spine data structures available to work with.
 
