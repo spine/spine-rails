@@ -16,8 +16,12 @@ module Spine
         else
           'ejs'
         end
-
-        template "view.#{view_format}.erb", "app/assets/javascripts/#{app_name}/views/#{file_name}.jst.#{view_format}"
+        
+        template "view.#{view_format}.erb", File.join(
+          "app/assets/javascripts", 
+          app_name, "views", 
+          class_path, file_name + ".jst.#{view_format}"
+        )
       end
     end
   end
