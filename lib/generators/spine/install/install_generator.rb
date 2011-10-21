@@ -14,7 +14,6 @@ module Spine
         def copy_spine
           say_status("copying", "Spine (#{Spine::Rails::SPINE_VERSION})", :green)
           copy_file "spine.js", "public/javascripts/spine.js"
-          copy_file "spine.min.js", "public/javascripts/spine.min.js"
         end
       end
 
@@ -25,20 +24,26 @@ module Spine
         source_root File.expand_path("../templates", __FILE__)
     
         desc "This generator installs Spine #{Spine::Rails::SPINE_VERSION} as part of assets pipeline"
+        
+        class_option :app, :type => :string, :default => "app", :desc => "app name"
+        
+        def app_name
+          options[:app]
+        end
             
         def create_dir_layout
           %W{models views controllers}.each do |dir|
-            empty_directory "app/assets/javascripts/#{dir}" 
-            create_file "app/assets/javascripts/#{dir}/.gitkeep"
+            empty_directory "app/assets/javascripts/#{app_name}/#{dir}" 
+            create_file "app/assets/javascripts/#{app_name}/#{dir}/.gitkeep"
           end
         end
       
         def create_app_file
-          copy_file "app.coffee", "app/assets/javascripts/app.js.coffee"
+          copy_file "index.coffee", "app/assets/javascripts/#{app_name}/index.coffee"
         end
        
         def add_spine_app_to_application
-          append_file "app/assets/javascripts/application.js", "//= require app"
+          append_file "app/assets/javascripts/application.js", "//= require #{app_name}"
         end
       end
 

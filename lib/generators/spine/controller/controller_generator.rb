@@ -2,12 +2,12 @@ require 'rails'
 
 module Spine
   module Generators
-    class ControllerGenerator < ::Rails::Generators::NamedBase
+    class ControllerGenerator < Base
       source_root File.expand_path("../templates", __FILE__)
       desc "Generate a Spine controller"
 
       def create_controller
-        template "controller.coffee.erb", "app/assets/javascripts/controllers/#{file_name}.js.coffee"
+        template "controller.coffee.erb", "app/assets/javascripts/#{app_name}/controllers/#{file_name}.coffee"
       end
     end
   end

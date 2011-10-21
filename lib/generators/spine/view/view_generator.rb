@@ -16,7 +16,7 @@ module Spine
           'ejs'
         end
 
-        template "view.#{view_format}.erb", "app/assets/javascripts/views/#{file_name}.jst.#{view_format}"
+        template "view.#{view_format}.erb", "app/assets/javascripts/#{app_name}/views/#{file_name}.jst.#{view_format}"
       end
     end
   end
