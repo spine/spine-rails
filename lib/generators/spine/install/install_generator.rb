@@ -30,6 +30,10 @@ module Spine
         def app_name
           options[:app]
         end
+        
+        def app_class
+          app_class.camelize
+        end
             
         def create_dir_layout
           %W{models views controllers}.each do |dir|
@@ -39,11 +43,11 @@ module Spine
         end
       
         def create_app_file
-          copy_file "index.coffee", "app/assets/javascripts/#{app_name}/index.coffee"
+          copy_file "index.coffee.erb", "app/assets/javascripts/#{app_name}/index.coffee"
         end
        
         def add_spine_app_to_application
-          append_file "app/assets/javascripts/application.js", "//= require #{app_name}"
+          append_file "app/assets/javascripts/application.js", "//= require #{app_name}\n"
         end
       end
 

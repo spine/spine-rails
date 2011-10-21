@@ -12,12 +12,12 @@
 #= require_tree ./controllers
 #= require_tree ./views
 
-class App extends Spine.Controller
+class <%= app_class %> extends Spine.Controller
   constructor: ->
     super
     
     # Initialize controllers:
-    #  @append(@items = new App.Items)
+    #  @append(@items = new <%= app_class %>.Items)
     #  ...
     
     Spine.Route.setup()
