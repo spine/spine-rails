@@ -5,7 +5,7 @@ module Spine
   module Generators
     class ViewGenerator < Base
       source_root File.expand_path("../templates", __FILE__)
-      desc "Generate a Spine views grouped by the name of the NAME argument"
+      desc "Generate a Spine view, eg: posts/index"
 
       # rails g spine:view Users index edit show
       def create_views
