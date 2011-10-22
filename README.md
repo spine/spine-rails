@@ -77,7 +77,7 @@ Created a new Rails 3.1 application called `blog`.
 
 Edit your Gemfile and add
 
-    gem 'spine-rails'
+    gem "spine-rails"
 
 Install the gem and generate resource.
 
@@ -116,7 +116,7 @@ Reload the page, then:
     
 For more information on how to integrate Spine with Rails, please see the [Rails guide](http://spinejs.com/docs/rails).
 
-Also if you want to have some usefull helpers to bridge the gap beetween Spine and Rails, then [spine-extensions](https://github.com/dnagir/spine-extensions) is for you.
+Also if you want to have some useful helpers to bridge the gap between Spine and Rails, then [spine-extensions](https://github.com/dnagir/spine-extensions) is for you.
 
 ## Attributions
 
