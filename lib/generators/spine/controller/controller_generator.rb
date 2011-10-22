@@ -11,7 +11,7 @@ module Spine
         template "controller.coffee.erb", File.join(
           "app/assets/javascripts", 
           app_name, "controllers", 
-          class_path, file_name.pluralize + ".coffee"
+          class_path, file_name.pluralize + ".js.coffee"
         )
       end
     end

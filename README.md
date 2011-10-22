@@ -31,7 +31,7 @@ Running `rails g spine:new` will create the following directory structure:
     app/assets/javascripts/app/models/
     app/assets/javascripts/app/views/
     app/assets/javascripts/app/controllers/
-    app/assets/javascripts/app/index.coffee
+    app/assets/javascripts/app/index.js.coffee
     
 By default your application will be namespaced by the `app` directory. You can specify a different namespace with the `--app` option:
 
@@ -39,7 +39,7 @@ By default your application will be namespaced by the `app` directory. You can s
     
 **NOTE:** If you use the `--app` option here, then you will also have to specify it with other generators.
 
-Use the top-level level `index.coffee` file to setup namespacing and initial controller instantiation.
+Use the top-level level `index.js.coffee` file to setup namespacing and initial controller instantiation.
 
 ## Generators
 

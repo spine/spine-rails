@@ -10,7 +10,7 @@ module Spine
       argument :fields, :desc => 'List of model attributes', :type => :array, :banner => 'field1 field2'
 
       def create_model
-        template "model.coffee.erb", "app/assets/javascripts/#{app_name}/models/#{file_name}.coffee"
+        template "model.coffee.erb", "app/assets/javascripts/#{app_name}/models/#{file_name}.js.coffee"
       end
     end
   end
