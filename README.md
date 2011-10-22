@@ -116,6 +116,8 @@ Reload the page, then:
     
 For more information on how to integrate Spine with Rails, please see the [Rails guide](http://spinejs.com/docs/rails).
 
+Also if you want to have some usefull helpers to bridge the gap beetween Spine and Rails, then [spine-extensions](https://github.com/dnagir/spine-extensions) is for you.
+
 ## Attributions
 
 This plugin was made by [Alex MacCaw](http://alexmaccaw.co.uk) with major contributions from [Dmytrii Nagirniak](https://github.com/dnagir). It's under the same license as [Spine](http://spinejs.com) (MIT).
