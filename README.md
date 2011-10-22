@@ -12,8 +12,6 @@ This gem does two things:
     
 * Adds some Spine generators, so you can easily create Spine Models, Views and Controllers.
 
-For versions of Rails less than 3.1, it only provides the generator to install JavaScript file into public directory. 
-
 ### Installation
 
 In your Gemfile, add this line:
@@ -39,6 +37,8 @@ By default your application will be namespaced by the `app` directory. You can s
 
     rails g spine:new --app foo_bar
     
+**NOTE:** If you use the `--app` option here, then you will also have to specify it with other generators.
+
 Use the top-level level `index.coffee` file to setup namespacing and initial controller instantiation.
 
 ## Generators
@@ -49,25 +49,25 @@ spine-rails provides three simple generators to help you get started:
 
     rails g spine:model User email username full_name
     
-This generator creates a very minimal model inside `app/assets/javascript/models`. You can optionally provide a list of attributes for the model.
+This generator creates a very minimal model inside `app/assets/javascript/app/models`. You have to provide a list of attributes for the model.
 
 ### Controller
     
     rails g spine:controller Users
     
-This generator creates a minimal `Users` controller in `app/assets/javascripts/controllers` to get you started. 
+This generator creates a minimal `Users` controller in `app/assets/javascripts/app/controllers` to get you started. 
 
 ### View
 
     rails g spine:view users/index
     
-This generates creates blank Spine views in the `app/assets/javascripts/views/users` directory. 
+This generator creates a blank Spine view `app/assets/javascripts/app/views/users/index.jst.ejs`.
 
-The generator will create views in `hamljs`, `eco` or `ejs` format, depending on which gems are availale:
+The generator will create views in `hamljs`, `eco` or `ejs` format, depending on the gems availale:
 
-- [eco](https://github.com/sstephenson/eco) - will use ECO templates
-- [rub-haml-js](https://github.com/dnagir/ruby-haml-js) - will use HAMLJS templates
-- otherwise, EJS templates will be used
+1. [eco](https://github.com/sstephenson/eco) - will use ECO templates
+2. [rub-haml-js](https://github.com/dnagir/ruby-haml-js) - will use HAMLJS templates
+3. otherwise, EJS templates will be used
 
 ## Example Usage
 
