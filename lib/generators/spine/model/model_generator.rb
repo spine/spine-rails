@@ -11,6 +11,7 @@ module Spine
 
       def create_model
         template "model.coffee.erb", "app/assets/javascripts/#{app_name}/models/#{file_name}.coffee"
+        generate_jasmine_spec object_name, "models"
       end
     end
   end
