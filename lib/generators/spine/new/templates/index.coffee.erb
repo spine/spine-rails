@@ -13,6 +13,9 @@
 #= require_tree ./views
 
 class <%= app_class %> extends Spine.Controller
+  @view: (name) ->
+    JST["<%= app_name %>/views/#{name}"]
+
   constructor: ->
     super
     
@@ -20,6 +23,6 @@ class <%= app_class %> extends Spine.Controller
     #  @append(@items = new <%= app_class %>.Items)
     #  ...
     
-    Spine.Route.setup()
+    Spine.Route.setup()    
 
 window.<%= app_class %> = <%= app_class %>
