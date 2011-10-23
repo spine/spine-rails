@@ -1,0 +1,12 @@
+<h1>Listing <%= model_class.pluralize %></h1>
+
+<%% for <%= model_name %> in @<%= controller_name %>: %>
+  <div class="item" data-id="<%%= <%= model_name %>.id %>">
+    <span><%%= <%= model_name %>.<%= fields[0] %> %></span>
+    
+    <a data-type="edit">Edit</a> 
+    <a data-type="destroy">Destroy</a>
+  </div>
+<%% end %>
+
+<p><a data-type="new">New <%= model_class %></a></p>

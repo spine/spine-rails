@@ -1,0 +1,12 @@
+<h1>Edit <%= model_class %></h1>
+
+<form>
+  <% fields.each do |field| %>
+  <label>
+    <span><%= field.titleize %></span>
+    <input type="text" name="<%= field %>" value="<%%= @<%= field %> %>" required>
+  </label>
+  <% end %>
+  <button>Edit</button>
+
+</form>

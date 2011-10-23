@@ -1,0 +1,109 @@
+<%= model_class %> = <%= app_class %>.<%= model_class %>
+$ = jQuery.sub()
+
+$.fn.item = ->
+  elementID   = $(@).data('id')
+  elementID or= $(@).parents('[data-id]').data('id')
+  <%= model_class %>.find(elementID)
+  
+class New extends Spine.Controller
+  events:
+    'submit form': 'submit'
+    
+  constructor: ->
+    super
+    @active @render
+    
+  render: ->
+    @html App.view('<%= controller_name %>/new')
+    
+  submit: (e) ->
+    e.preventDefault()
+    <%= model_name %> = <%= model_class %>.fromForm(e.target).save()
+    @navigate '/<%= controller_name %>', <%= model_name %>.id if <%= model_name %>
+
+class Edit extends Spine.Controller
+  events:
+    'submit form': 'submit'
+  
+  constructor: ->
+    super
+    @active (params) ->
+      @change(params.id)
+      
+  change: (id) ->
+    @item = <%= model_class %>.find(id)
+    @render()
+    
+  render: ->
+    @html App.view('<%= controller_name %>/edit')(@item)
+    
+  submit: (e) ->
+    e.preventDefault()
+    @item.fromForm(e.target).save()
+    @navigate '/<%= controller_name %>'
+
+class Index extends Spine.Controller
+  events:
+    'click [data-type=edit]': 'edit'
+    'click [data-type=destroy]': 'destroy'
+    'click .item span': 'click'
+    'click [data-type=new]': 'new'
+
+  constructor: ->
+    super
+    <%= model_class %>.bind 'refresh change', @render
+    <%= model_class %>.fetch()
+    
+  render: =>
+    <%= controller_name %> = <%= model_class %>.all()
+    @html App.view('<%= controller_name %>/index')(<%= controller_name %>: <%= controller_name %>)
+    
+  edit: (e) ->
+    item = $(e.target).item()
+    @navigate '/<%= controller_name %>', item.id, 'edit'
+    
+  destroy: (e) ->
+    item = $(e.target).item()
+    item.destroy() if confirm('Sure?')
+    
+  click: (e) ->
+    item = $(e.target).item()
+    @navigate '/<%= controller_name %>', item.id
+    
+  new: ->
+    @navigate '/<%= controller_name %>/new'
+    
+class Show extends Spine.Controller
+  events:
+    'click [data-type=back]': 'back'
+  
+  constructor: ->
+    super
+    @active (params) ->
+      @change(params.id)
+      
+  change: (id) ->
+    @item = <%= model_class %>.find(id)
+    @render()
+    
+  render: ->
+    @html App.view('<%= controller_name %>/show')(@item)
+    
+  back: ->
+    @navigate '/<%= controller_name %>'
+    
+class App.<%= controller_class %> extends Spine.Stack
+  controllers:
+    index: Index
+    edit:  Edit
+    show:  Show
+    new:   New
+    
+  routes:
+    '/<%= controller_name %>/new': 'new'
+    '/<%= controller_name %>/:id/edit': 'edit'
+    '/<%= controller_name %>/:id': 'show'
+    '/<%= controller_name %>': 'index'
+    
+  default: 'index'
