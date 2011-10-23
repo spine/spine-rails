@@ -1,0 +1,3 @@
+app = <%= app_class %>
+app.view = (name)             -> JST["<%= app_name %>/views/#{name}"]
+app.render = (name, data) -> @view(name)(data)

@@ -18,7 +18,7 @@ module Spine
       end
           
       def create_dir_layout
-        %W{models views controllers lib}.each do |dir|
+        %W{models views controllers lib helpers}.each do |dir|
           empty_directory "app/assets/javascripts/#{app_name}/#{dir}" 
           create_file "app/assets/javascripts/#{app_name}/#{dir}/.gitkeep"
         end
@@ -27,6 +27,11 @@ module Spine
       def create_app_file
         template "index.coffee.erb", "app/assets/javascripts/#{app_name}/index.js.coffee"
       end
+
+      def create_helpers
+        template "jst-access.coffee.erb", "app/assets/javascripts/#{app_name}/helpers/jst-access.js.coffee"
+      end
+
      
       def add_spine_app_to_application
         source  = "app/assets/javascripts/application.js"
