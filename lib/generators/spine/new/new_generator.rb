@@ -27,6 +27,10 @@ module Spine
       def create_app_file
         template "index.coffee.erb", "app/assets/javascripts/#{app_name}/index.js.coffee"
       end
+      
+      def create_lib_file
+        template "view.coffee.erb", "app/assets/javascripts/#{app_name}/lib/view.js.coffee"        
+      end
      
       def add_spine_app_to_application
         source  = "app/assets/javascripts/application.js"

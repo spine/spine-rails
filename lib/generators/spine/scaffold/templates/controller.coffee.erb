@@ -15,7 +15,7 @@ class New extends Spine.Controller
     @active @render
     
   render: ->
-    @html App.view('<%= controller_name %>/new')
+    @html @view('<%= controller_name %>/new')
     
   submit: (e) ->
     e.preventDefault()
@@ -36,7 +36,7 @@ class Edit extends Spine.Controller
     @render()
     
   render: ->
-    @html App.view('<%= controller_name %>/edit')(@item)
+    @html @view('<%= controller_name %>/edit')(@item)
     
   submit: (e) ->
     e.preventDefault()
@@ -57,7 +57,7 @@ class Show extends Spine.Controller
     @render()
 
   render: ->
-    @html App.view('<%= controller_name %>/show')(@item)
+    @html @view('<%= controller_name %>/show')(@item)
 
   back: ->
     @navigate '/<%= controller_name %>'
@@ -76,7 +76,7 @@ class Index extends Spine.Controller
     
   render: =>
     <%= controller_name %> = <%= model_class %>.all()
-    @html App.view('<%= controller_name %>/index')(<%= controller_name %>: <%= controller_name %>)
+    @html @view('<%= controller_name %>/index')(<%= controller_name %>: <%= controller_name %>)
     
   edit: (e) ->
     item = $(e.target).item()
