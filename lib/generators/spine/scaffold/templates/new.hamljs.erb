@@ -1,0 +1,7 @@
+%h1 New <%= model_class %>
+%form<% fields.each do |field| %>
+  %label
+    %span <%= field.titleize %>
+    %input{type:'text', name:'<%= field %>', required: true}
+<% end %>
+  %button Create

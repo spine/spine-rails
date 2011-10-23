@@ -1,0 +1,7 @@
+%h1 Edit <%= model_class %>
+%form<% fields.each do |field| %>
+  %label
+    %span <%= field.titleize %>
+    %input{type:'text', name:'<%= field %>', value:<%=field %>, required: true}
+<% end %>
+  %button Edit

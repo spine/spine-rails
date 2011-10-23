@@ -26,15 +26,17 @@ module Spine
       end
       
       def create_scaffold
-        raise("Eco required - please add to Gemfile") unless defined?(::Eco)
-        
         generate "spine:model #{model_name} #{fields.join(" ")} --app #{app_name}"
         template "controller.coffee.erb", "app/assets/javascripts/#{app_name}/controllers/#{controller_name}.js.coffee"
-        template "edit.jst.erb",  "app/assets/javascripts/#{app_name}/views/#{controller_name}/edit.jst.eco"
-        template "index.jst.erb", "app/assets/javascripts/#{app_name}/views/#{controller_name}/index.jst.eco"
-        template "new.jst.erb",   "app/assets/javascripts/#{app_name}/views/#{controller_name}/new.jst.eco"
-        template "show.jst.erb",  "app/assets/javascripts/#{app_name}/views/#{controller_name}/show.jst.eco"
+        %w{new edit index show}.each {|name| scaffold_view name }
       end
+
+      protected
+
+      def scaffold_view name
+        template "#{name}.#{view_format}.erb",  "app/assets/javascripts/#{app_name}/views/#{controller_name}/#{name}.jst.#{view_format}"
+      end
+
     end
   end
 end

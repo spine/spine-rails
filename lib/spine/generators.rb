@@ -14,6 +14,16 @@ module Spine
       def app_class
         app_name.camelize
       end
+
+      def view_format
+        if defined?(::Eco)
+          'eco'
+        elsif defined?(::RubyHamlJs)
+          'hamljs'
+        else
+          'ejs'
+        end
+      end
     end
   end
 end
