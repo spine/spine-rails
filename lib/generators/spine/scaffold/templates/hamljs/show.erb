@@ -1,0 +1,6 @@
+%h1 Show <%= model_class %>
+%a{data-type:'back'} Back
+
+<%- fields.each do |field| -%>
+%p= '<%= field.titleize %>: ' + <%= field %>
+<%- end -%>

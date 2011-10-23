@@ -43,7 +43,9 @@ Use the top-level level `index.js.coffee` file to setup namespacing and initial 
 
 ## Generators
 
-spine-rails provides three simple generators to help you get started:
+spine-rails provides three simple generators to help you get started.
+
+It will also create Jasmine specs for Models and Controllers if [jasmine](https://github.com/pivotal/jasmine) gem is available.
 
 ### Model
 

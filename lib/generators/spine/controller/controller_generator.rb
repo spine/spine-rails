@@ -13,6 +13,7 @@ module Spine
           app_name, "controllers", 
           class_path, file_name.pluralize + ".js.coffee"
         )
+        generate_jasmine_spec object_name, "controllers"
       end
     end
   end
