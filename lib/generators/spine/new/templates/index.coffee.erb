@@ -12,14 +12,20 @@
 #= require_tree ./controllers
 #= require_tree ./views
 
-class <%= app_class %> extends Spine.Controller
+class Application extends Spine.Controller
   constructor: ->
     super
-    
-    # Initialize controllers:
+    # Initialize everything except DOM-ready
+
+  startup: ->
+    # Initialize controllers (when DOM is ready):
     #  @append(@items = new <%= app_class %>.Items)
     #  ...
-    
     Spine.Route.setup()
 
-window.<%= app_class %> = <%= app_class %>
+
+
+window.<%= app_class %> = new Application()
+
+# Start-up the application when page has been loaded
+jQuery -> window.<%= app_class %>.startup()
