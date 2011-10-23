@@ -1,0 +1,8 @@
+%h1 Listing <%= model_class.pluralize %>
+:each <%= model_name %> in <%= controller_name %>
+  .item{data-id: <%= model_name %>.id}
+    %span= <%= model_name %>.<%= fields[0] %>
+    %a{data-type:'edit'} Edit
+    %a{data-type:"destroy"} Destroy
+%p
+  %a{data-type:'new'} New <%= model_class %>
