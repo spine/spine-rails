@@ -3,6 +3,8 @@ module Spine
     class Base < ::Rails::Generators::NamedBase
       class_option :app, :type => :string, :default => "app", :desc => "app name"
       
+      protected
+
       def class_name
         (class_path + [file_name]).map!{ |m| m.camelize }.join('')
       end
@@ -24,6 +26,7 @@ module Spine
           'ejs'
         end
       end
+
     end
   end
 end
