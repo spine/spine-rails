@@ -26,6 +26,8 @@ module Spine
       end
       
       def create_scaffold
+        raise("eco or ruby-haml-js gem required - please add to Gemfile") if view_format == 'ejs'
+
         generate "spine:model #{model_name} #{fields.join(" ")} --app #{app_name}"
         template "controller.coffee.erb", "app/assets/javascripts/#{app_name}/controllers/#{controller_name}.js.coffee"
         %w{new edit index show}.each {|name| scaffold_view name }
@@ -34,7 +36,7 @@ module Spine
       protected
 
       def scaffold_view name
-        template "#{name}.#{view_format}.erb",  "app/assets/javascripts/#{app_name}/views/#{controller_name}/#{name}.jst.#{view_format}"
+        template "#{view_format}/#{name}.erb",  "app/assets/javascripts/#{app_name}/views/#{controller_name}/#{name}.jst.#{view_format}"
       end
 
     end
