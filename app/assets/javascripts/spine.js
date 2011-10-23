@@ -328,6 +328,10 @@
         return new this(objects);
       }
     };
+    Model.fromForm = function() {
+      var _ref;
+      return (_ref = new this).fromForm.apply(_ref, arguments);
+    };
     Model.recordsValues = function() {
       var key, result, value, _ref;
       result = [];
@@ -363,13 +367,16 @@
     };
     Model.prototype.validate = function() {};
     Model.prototype.load = function(atts) {
-      var key, value, _results;
-      _results = [];
+      var key, value;
       for (key in atts) {
         value = atts[key];
-        _results.push(typeof this[key] === 'function' ? this[key](value) : this[key] = value);
+        if (typeof this[key] === 'function') {
+          this[key](value);
+        } else {
+          this[key] = value;
+        }
       }
-      return _results;
+      return this;
     };
     Model.prototype.attributes = function() {
       var key, result, _i, _len, _ref;
@@ -459,6 +466,16 @@
     };
     Model.prototype.toString = function() {
       return "<" + this.constructor.className + " (" + (JSON.stringify(this)) + ")>";
+    };
+    Model.prototype.fromForm = function(form) {
+      var key, result, _i, _len, _ref;
+      result = {};
+      _ref = $(form).serializeArray();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        key = _ref[_i];
+        result[key.name] = key.value;
+      }
+      return this.load(result);
     };
     Model.prototype.exists = function() {
       return this.id && this.id in this.constructor.records;

@@ -81,6 +81,49 @@
       return this;
     }
   });
+  Spine.Stack = (function() {
+    __extends(Stack, Spine.Controller);
+    Stack.prototype.controllers = {};
+    Stack.prototype.routes = {};
+    Stack.prototype.className = 'spine stack';
+    function Stack() {
+      var key, value, _fn, _ref, _ref2;
+      Stack.__super__.constructor.apply(this, arguments);
+      this.manager = new Spine.Manager;
+      _ref = this.controllers;
+      for (key in _ref) {
+        value = _ref[key];
+        this[key] = new value({
+          stack: this
+        });
+        this.add(this[key]);
+      }
+      _ref2 = this.routes;
+      _fn = __bind(function(key, value) {
+        var callback;
+        if (typeof value === 'function') {
+          callback = value;
+        }
+        callback || (callback = __bind(function() {
+          var _ref3;
+          return (_ref3 = this[value]).active.apply(_ref3, arguments);
+        }, this));
+        return this.route(key, callback);
+      }, this);
+      for (key in _ref2) {
+        value = _ref2[key];
+        _fn(key, value);
+      }
+      if (this["default"]) {
+        this[this["default"]].active();
+      }
+    }
+    Stack.prototype.add = function(controller) {
+      this.manager.add(controller);
+      return this.append(controller);
+    };
+    return Stack;
+  })();
   if (typeof module !== "undefined" && module !== null) {
     module.exports = Spine.Manager;
   }
