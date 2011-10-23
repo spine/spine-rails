@@ -2,7 +2,7 @@
 
 <%% for <%= model_name %> in @<%= controller_name %>: %>
   <div class="item" data-id="<%%= <%= model_name %>.id %>">
-    <span><%%= <%= model_name %>.<%= fields[0] %> %></span>
+    <a data-type="show"><%%= <%= model_name %>.<%= fields[0] %> %></a>
     
     <a data-type="edit">Edit</a> 
     <a data-type="destroy">Destroy</a>

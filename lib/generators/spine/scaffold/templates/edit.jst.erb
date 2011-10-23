@@ -4,7 +4,10 @@
   <% fields.each do |field| %>
   <label>
     <span><%= field.titleize %></span>
-    <input type="text" name="<%= field %>" value="<%%= @<%= field %> %>" required>
+    <input 
+      type="text" name="<%= field %>" 
+      value="<%%= @<%= field %> %>" required
+      <%- if field == fields[0] %> autofocus<% end %>>
   </label>
   <% end %>
   <button>Edit</button>

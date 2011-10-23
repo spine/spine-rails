@@ -1,11 +1,11 @@
-<%= model_class %> = <%= app_class %>.<%= model_class %>
 $ = jQuery.sub()
+<%= model_class %> = <%= app_class %>.<%= model_class %>
 
 $.fn.item = ->
   elementID   = $(@).data('id')
   elementID or= $(@).parents('[data-id]').data('id')
   <%= model_class %>.find(elementID)
-  
+
 class New extends Spine.Controller
   events:
     'submit form': 'submit'
@@ -43,12 +43,31 @@ class Edit extends Spine.Controller
     @item.fromForm(e.target).save()
     @navigate '/<%= controller_name %>'
 
+class Show extends Spine.Controller
+  events:
+    'click [data-type=back]': 'back'
+
+  constructor: ->
+    super
+    @active (params) ->
+      @change(params.id)
+
+  change: (id) ->
+    @item = <%= model_class %>.find(id)
+    @render()
+
+  render: ->
+    @html App.view('<%= controller_name %>/show')(@item)
+
+  back: ->
+    @navigate '/<%= controller_name %>'
+
 class Index extends Spine.Controller
   events:
-    'click [data-type=edit]': 'edit'
+    'click [data-type=edit]':    'edit'
     'click [data-type=destroy]': 'destroy'
-    'click .item span': 'click'
-    'click [data-type=new]': 'new'
+    'click [data-type=show]':    'show'
+    'click [data-type=new]':     'new'
 
   constructor: ->
     super
@@ -67,31 +86,12 @@ class Index extends Spine.Controller
     item = $(e.target).item()
     item.destroy() if confirm('Sure?')
     
-  click: (e) ->
+  show: (e) ->
     item = $(e.target).item()
     @navigate '/<%= controller_name %>', item.id
     
   new: ->
     @navigate '/<%= controller_name %>/new'
-    
-class Show extends Spine.Controller
-  events:
-    'click [data-type=back]': 'back'
-  
-  constructor: ->
-    super
-    @active (params) ->
-      @change(params.id)
-      
-  change: (id) ->
-    @item = <%= model_class %>.find(id)
-    @render()
-    
-  render: ->
-    @html App.view('<%= controller_name %>/show')(@item)
-    
-  back: ->
-    @navigate '/<%= controller_name %>'
     
 class App.<%= controller_class %> extends Spine.Stack
   controllers:
@@ -101,9 +101,10 @@ class App.<%= controller_class %> extends Spine.Stack
     new:   New
     
   routes:
-    '/<%= controller_name %>/new': 'new'
+    '/<%= controller_name %>/new':      'new'
     '/<%= controller_name %>/:id/edit': 'edit'
-    '/<%= controller_name %>/:id': 'show'
-    '/<%= controller_name %>': 'index'
+    '/<%= controller_name %>/:id':      'show'
+    '/<%= controller_name %>':          'index'
     
   default: 'index'
+  className: 'stack <%= controller_name %>'
