@@ -8,6 +8,7 @@ $.fn.item = ->
 
 class New extends Spine.Controller
   events:
+    'click [data-type=back]': 'back'
     'submit form': 'submit'
     
   constructor: ->
@@ -16,7 +17,10 @@ class New extends Spine.Controller
     
   render: ->
     @html @view('<%= controller_name %>/new')
-    
+
+  back: ->
+    @navigate '/<%= controller_name %>'
+
   submit: (e) ->
     e.preventDefault()
     <%= model_name %> = <%= model_class %>.fromForm(e.target).save()
@@ -24,6 +28,7 @@ class New extends Spine.Controller
 
 class Edit extends Spine.Controller
   events:
+    'click [data-type=back]': 'back'
     'submit form': 'submit'
   
   constructor: ->
@@ -37,7 +42,10 @@ class Edit extends Spine.Controller
     
   render: ->
     @html @view('<%= controller_name %>/edit')(@item)
-    
+
+  back: ->
+    @navigate '/<%= controller_name %>'
+
   submit: (e) ->
     e.preventDefault()
     @item.fromForm(e.target).save()
@@ -45,6 +53,7 @@ class Edit extends Spine.Controller
 
 class Show extends Spine.Controller
   events:
+    'click [bata-type=edit]': 'edit'
     'click [data-type=back]': 'back'
 
   constructor: ->
@@ -58,6 +67,9 @@ class Show extends Spine.Controller
 
   render: ->
     @html @view('<%= controller_name %>/show')(@item)
+
+  edit: ->
+    @navigate '/<%= controller_name %>', @item.id, 'edit'
 
   back: ->
     @navigate '/<%= controller_name %>'
