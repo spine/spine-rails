@@ -3,15 +3,12 @@
 <a data-type="back">Back</a>
 
 <form>
-  <% fields.each do |field| %>
-  <label>
-    <span><%= field.titleize %></span>
-    <input 
-      type="text" name="<%= field %>" 
-      value="<%%= @<%= field %> %>" required
-      <%- if field == fields[0] %> autofocus<% end %>>
-  </label>
-  <% end %>
+<% fields.each do |field| %>
+  <label for="<%= field %>"><%= field.titleize %></label>
+  <input id="<%= field %>" name="<%= field %>" type="text" value="<%%= @<%= field %> %>" required <%- field == fields.first ? "autofocus" : "" %>>
+  <br />
+<% end %>
+
   <button>Edit</button>
 
 </form>
