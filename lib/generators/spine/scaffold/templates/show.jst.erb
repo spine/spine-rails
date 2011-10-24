@@ -1,6 +1,6 @@
 <h1>Show <%= model_class %></h1>
 
-<a data-type="back">Back</a>
+<a data-type="edit">Edit</a> <a data-type="back">Back</a>
 
 <%- fields.each do |field| -%>
 <p><%= field.titleize %>: <%%= @<%= field %> %></p>
