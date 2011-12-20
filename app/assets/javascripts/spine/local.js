@@ -1,7 +1,7 @@
 (function() {
-  if (typeof Spine === "undefined" || Spine === null) {
-    Spine = require('spine');
-  }
+
+  if (typeof Spine === "undefined" || Spine === null) Spine = require('spine');
+
   Spine.Model.Local = {
     extended: function() {
       this.change(this.saveLocal);
@@ -20,7 +20,9 @@
       });
     }
   };
+
   if (typeof module !== "undefined" && module !== null) {
     module.exports = Spine.Model.Local;
   }
+
 }).call(this);
