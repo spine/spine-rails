@@ -105,7 +105,7 @@ class Index extends Spine.Controller
   new: ->
     @navigate '/<%= controller_name %>/new'
     
-class App.<%= controller_class %> extends Spine.Stack
+class <%= app_class %>.<%= controller_class %> extends Spine.Stack
   controllers:
     index: Index
     edit:  Edit
