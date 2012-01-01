@@ -17,12 +17,13 @@
   escapeRegExp = /[-[\]{}()+?.,\\^$|#\s]/g;
 
   Spine.Route = (function(_super) {
+    var _ref;
 
     __extends(Route, _super);
 
     Route.extend(Spine.Events);
 
-    Route.historySupport = "history" in window;
+    Route.historySupport = ((_ref = window.history) != null ? _ref.pushState : void 0) != null;
 
     Route.routes = [];
 
@@ -34,7 +35,7 @@
 
     Route.add = function(path, callback) {
       var key, value, _results;
-      if (typeof path === "object" && !(path instanceof RegExp)) {
+      if (typeof path === 'object' && !(path instanceof RegExp)) {
         _results = [];
         for (key in path) {
           value = path[key];
@@ -54,18 +55,18 @@
       }
       if (this.options.shim) return;
       if (this.history) {
-        $(window).bind("popstate", this.change);
+        $(window).bind('popstate', this.change);
       } else {
-        $(window).bind("hashchange", this.change);
+        $(window).bind('hashchange', this.change);
       }
       return this.change();
     };
 
     Route.unbind = function() {
       if (this.history) {
-        return $(window).unbind("popstate", this.change);
+        return $(window).unbind('popstate', this.change);
       } else {
-        return $(window).unbind("hashchange", this.change);
+        return $(window).unbind('hashchange', this.change);
       }
     };
 
@@ -74,26 +75,30 @@
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       options = {};
       lastArg = args[args.length - 1];
-      if (typeof lastArg === "object") {
+      if (typeof lastArg === 'object') {
         options = args.pop();
-      } else if (typeof lastArg === "boolean") {
+      } else if (typeof lastArg === 'boolean') {
         options.trigger = args.pop();
       }
       options = $.extend({}, this.options, options);
-      path = args.join("/");
+      path = args.join('/');
       if (this.path === path) return;
       this.path = path;
+      this.trigger('navigate', this.path);
       if (options.trigger) this.matchRoute(this.path, options);
       if (options.shim) return;
       if (this.history) {
-        return history.pushState({}, document.title, this.getHost() + this.path);
+        return history.pushState({}, document.title, this.path);
       } else {
         return window.location.hash = this.path;
       }
     };
 
     Route.getPath = function() {
-      return window.location.pathname;
+      var path;
+      path = window.location.pathname;
+      if (path.substr(0, 1) !== '/') path = '/' + path;
+      return path;
     };
 
     Route.getHash = function() {
@@ -101,28 +106,28 @@
     };
 
     Route.getFragment = function() {
-      return this.getHash().replace(hashStrip, "");
+      return this.getHash().replace(hashStrip, '');
     };
 
     Route.getHost = function() {
-      return (document.location + "").replace(this.getPath() + this.getHash(), "");
+      return (document.location + '').replace(this.getPath() + this.getHash(), '');
     };
 
     Route.change = function() {
       var path;
-      path = this.history ? this.getPath() : this.getFragment();
+      path = this.getFragment() !== '' ? this.getFragment() : this.getPath();
       if (path === this.path) return;
       this.path = path;
       return this.matchRoute(this.path);
     };
 
     Route.matchRoute = function(path, options) {
-      var route, _i, _len, _ref;
-      _ref = this.routes;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        route = _ref[_i];
+      var route, _i, _len, _ref2;
+      _ref2 = this.routes;
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        route = _ref2[_i];
         if (route.match(path, options)) {
-          this.trigger("change", route, path);
+          this.trigger('change', route, path);
           return route;
         }
       }
@@ -133,11 +138,12 @@
       this.path = path;
       this.callback = callback;
       this.names = [];
-      if (typeof path === "string") {
+      if (typeof path === 'string') {
+        namedParam.lastIndex = 0;
         while ((match = namedParam.exec(path)) !== null) {
           this.names.push(match[1]);
         }
-        path = path.replace(escapeRegExp, "\\$&").replace(namedParam, "([^\/]*)").replace(splatParam, "(.*?)");
+        path = path.replace(escapeRegExp, '\\$&').replace(namedParam, '([^\/]*)').replace(splatParam, '(.*?)');
         this.route = new RegExp('^' + path + '$');
       } else {
         this.route = path;
