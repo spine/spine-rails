@@ -1,5 +1,5 @@
 (function() {
-  var $, Controller, Events, Log, Model, Module, Spine, guid, isArray, isBlank, makeArray, moduleKeywords,
+  var $, Controller, Events, Log, Model, Module, Spine, isArray, isBlank, makeArray, moduleKeywords,
     __slice = Array.prototype.slice,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
@@ -67,9 +67,10 @@
       var args;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       if (!this.trace) return;
-      if (typeof console === 'undefined') return;
       if (this.logPrefix) args.unshift(this.logPrefix);
-      console.log.apply(console, args);
+      if (typeof console !== "undefined" && console !== null) {
+        if (typeof console.log === "function") console.log.apply(console, args);
+      }
       return this;
     }
   };
@@ -130,6 +131,8 @@
 
     Model.records = {};
 
+    Model.crecords = {};
+
     Model.attributes = [];
 
     Model.configure = function() {
@@ -137,6 +140,7 @@
       name = arguments[0], attributes = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       this.className = name;
       this.records = {};
+      this.crecords = {};
       if (attributes.length) this.attributes = attributes;
       this.attributes && (this.attributes = makeArray(this.attributes));
       this.attributes || (this.attributes = []);
@@ -151,6 +155,14 @@
     Model.find = function(id) {
       var record;
       record = this.records[id];
+      if (!record && ("" + id).match(/c-\d+/)) return this.findCID(id);
+      if (!record) throw 'Unknown record';
+      return record.clone();
+    };
+
+    Model.findCID = function(cid) {
+      var record;
+      record = this.crecords[cid];
       if (!record) throw 'Unknown record';
       return record.clone();
     };
@@ -166,16 +178,19 @@
     Model.refresh = function(values, options) {
       var record, records, _i, _len;
       if (options == null) options = {};
-      if (options.clear) this.records = {};
+      if (options.clear) {
+        this.records = {};
+        this.crecords = {};
+      }
       records = this.fromJSON(values);
       if (!isArray(records)) records = [records];
       for (_i = 0, _len = records.length; _i < _len; _i++) {
         record = records[_i];
-        record.newRecord = false;
-        record.id || (record.id = guid());
+        record.id || (record.id = record.cid);
         this.records[record.id] = record;
+        this.crecords[record.cid] = record;
       }
-      this.trigger('refresh', !options.clear && records);
+      this.trigger('refresh', !options.clear && this.cloneArray(records));
       return this;
     };
 
@@ -319,10 +334,6 @@
       return (_ref = new this).fromForm.apply(_ref, arguments);
     };
 
-    Model.guid = function() {
-      return guid();
-    };
-
     Model.recordsValues = function() {
       var key, result, value, _ref;
       result = [];
@@ -344,16 +355,20 @@
       return _results;
     };
 
-    Model.prototype.newRecord = true;
+    Model.idCounter = 0;
+
+    Model.uid = function() {
+      return this.idCounter++;
+    };
 
     function Model(atts) {
       Model.__super__.constructor.apply(this, arguments);
-      this.ids = [];
       if (atts) this.load(atts);
+      this.cid || (this.cid = 'c-' + this.constructor.uid());
     }
 
     Model.prototype.isNew = function() {
-      return this.newRecord;
+      return !this.exists();
     };
 
     Model.prototype.isValid = function() {
@@ -394,8 +409,7 @@
     };
 
     Model.prototype.eql = function(rec) {
-      var _ref, _ref2;
-      return rec && rec.constructor === this.constructor && (rec.id === this.id || (_ref = this.id, __indexOf.call(rec.ids, _ref) >= 0) || (_ref2 = rec.id, __indexOf.call(this.ids, _ref2) >= 0));
+      return !!(rec && rec.constructor === this.constructor && (rec.id === this.id || rec.cid === this.cid));
     };
 
     Model.prototype.save = function(options) {
@@ -409,7 +423,7 @@
         }
       }
       this.trigger('beforeSave', options);
-      record = this.newRecord ? this.create(options) : this.update(options);
+      record = this.isNew() ? this.create(options) : this.update(options);
       this.trigger('save', options);
       return record;
     };
@@ -426,7 +440,6 @@
 
     Model.prototype.changeID = function(id) {
       var records;
-      this.ids.push(this.id);
       records = this.constructor.records;
       records[id] = records[this.id];
       delete records[this.id];
@@ -438,6 +451,7 @@
       if (options == null) options = {};
       this.trigger('beforeDestroy', options);
       delete this.constructor.records[this.id];
+      delete this.constructor.crecords[this.cid];
       this.destroyed = true;
       this.trigger('destroy', options);
       this.trigger('change', 'destroy', options);
@@ -449,7 +463,7 @@
       var result;
       result = new this.constructor(this.attributes());
       if (newRecord === false) {
-        result.newRecord = this.newRecord;
+        result.cid = this.cid;
       } else {
         delete result.id;
       }
@@ -462,7 +476,7 @@
 
     Model.prototype.reload = function() {
       var original;
-      if (this.newRecord) return this;
+      if (this.isNew()) return this;
       original = this.constructor.find(this.id);
       this.load(original.attributes());
       return original;
@@ -503,13 +517,13 @@
     };
 
     Model.prototype.create = function(options) {
-      var clone, records;
+      var clone, record;
       this.trigger('beforeCreate', options);
-      if (!this.id) this.id = this.constructor.guid();
-      this.newRecord = false;
-      records = this.constructor.records;
-      records[this.id] = this.dup(false);
-      clone = records[this.id].clone();
+      if (!this.id) this.id = this.cid;
+      record = this.dup(false);
+      this.constructor.records[this.id] = record;
+      this.constructor.crecords[this.cid] = record;
+      clone = record.clone();
       clone.trigger('create', options);
       clone.trigger('change', 'create', options);
       return clone;
@@ -693,7 +707,7 @@
 
   })(Module);
 
-  $ = window.jQuery || window.Zepto || function(element) {
+  $ = (typeof window !== "undefined" && window !== null ? window.jQuery : void 0) || (typeof window !== "undefined" && window !== null ? window.Zepto : void 0) || function(element) {
     return element;
   };
 
@@ -721,15 +735,6 @@
 
   makeArray = function(args) {
     return Array.prototype.slice.call(args, 0);
-  };
-
-  guid = function() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r, v;
-      r = Math.random() * 16 | 0;
-      v = c === 'x' ? r : r & 3 | 8;
-      return v.toString(16);
-    }).toUpperCase();
   };
 
   Spine = this.Spine = {};

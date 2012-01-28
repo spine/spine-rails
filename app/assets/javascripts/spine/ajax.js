@@ -19,9 +19,13 @@
     pending: false,
     requests: [],
     disable: function(callback) {
-      this.enabled = false;
-      callback();
-      return this.enabled = true;
+      if (this.enabled) {
+        this.enabled = false;
+        callback();
+        return this.enabled = true;
+      } else {
+        return callback();
+      }
     },
     requestNext: function() {
       var next;
@@ -264,6 +268,7 @@
     },
     ajaxChange: function(record, type, options) {
       if (options == null) options = {};
+      if (options.ajax === false) return;
       return record.ajax()[type](options.ajax, options);
     }
   };
