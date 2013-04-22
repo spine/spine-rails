@@ -15,8 +15,9 @@ Gem::Specification.new do |s|
   s.rubyforge_project         = "spine-rails"
 
   s.add_dependency             "rails", ">= 3.1.0"
+  s.add_dependency             "json2-rails", ">= 0.0.2"
   s.add_development_dependency "bundler"
-  
+
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").select{|f| f =~ /^bin/}
   s.require_path = 'lib'
