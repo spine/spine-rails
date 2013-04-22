@@ -7,7 +7,7 @@ module Spine
 
       desc "This generator installs Spine #{Spine::Rails::SPINE_VERSION} as part of assets pipeline"
 
-      class_option :app, :type => :string, :default => "app", :desc => "app name"
+      class_option :app, type: :string, default: "app", desc: "app name"
 
       def app_name
         options[:app]
@@ -37,7 +37,7 @@ module Spine
         content = File.read(source)
 
         if content.include?("//= require_tree .")
-          inject_into_file source, :before => "//= require_tree ." do
+          inject_into_file source, before: "//= require_tree ." do
             "//= require #{app_name}\n"
           end
         else
