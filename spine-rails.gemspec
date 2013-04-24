@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.add_dependency             "rails", ">= 3.1.0"
   s.add_dependency             "json2-rails", ">= 0.0.2"
   s.add_development_dependency "bundler"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "coffee-rails"
 
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").select{|f| f =~ /^bin/}

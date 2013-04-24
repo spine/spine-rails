@@ -1,10 +1,10 @@
 require 'bundler'
+require 'rspec/core/rake_task'
 Bundler::GemHelper.install_tasks
 
-# require "spec/rake/spectask"
-# desc "Run all examples"
-# Spec::Rake::SpecTask.new(:spec) do |t|
-#   t.ruby_opts  = ['-r test/unit']
-#   t.spec_opts = %w[--color]
-# end
+desc "Run all examples"
+RSpec::Core::RakeTask.new('spec') do |t|
+  t.rspec_opts = %w[--color -fs]
+end
+
 task :default => :spec
