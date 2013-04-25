@@ -14,9 +14,18 @@ This gem does two things:
 
 ### Installation
 
-In your Gemfile, add this line:
+In your Gemfile, add the following lines:
 
+    gem "json2-rails"
     gem "spine-rails"
+
+Make sure that your Gemfile also includes
+
+    gem "jquery-rails"
+    
+Or if your using Zepto
+
+    gem "zepto-rails"
 
 Then run the following commands:
 
@@ -71,7 +80,7 @@ The generator will create views in `hamljs`, `eco` or `ejs` format, depending on
 
 ## Example Usage
 
-Created a new Rails 3.1 application called `blog`.
+Created a new Rails application called `blog`.
 
     rails new blog
 
@@ -120,4 +129,4 @@ Also if you want to have some useful helpers to bridge the gap between Spine and
 
 ## Attributions
 
-This plugin was made by [Alex MacCaw](http://alexmaccaw.co.uk) with major contributions from [Dmytrii Nagirniak](https://github.com/dnagir). It's under the same license as [Spine](http://spinejs.com) (MIT).
+This plugin was made by [Alex MacCaw](http://alexmaccaw.co.uk) with major contributions from [Dmytrii Nagirniak](https://github.com/dnagir) [Zohar Arad] (https:://github.com/zohararad) and [Ben Haines] (http://github.com/benhainez). It's under the same license as [Spine](http://spinejs.com) (MIT).
