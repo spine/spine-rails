@@ -1,7 +1,7 @@
 module Spine
   module Generators
     class Base < ::Rails::Generators::NamedBase
-      class_option :app, type: :string, default: "app", desc: "app name"
+      class_option :app, :type => :string, :default => "app", :desc => "app name"
 
       protected
 
