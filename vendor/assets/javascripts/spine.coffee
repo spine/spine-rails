@@ -1,3 +1,8 @@
+###
+Spine.js MVC library
+Released under the MIT License
+###
+
 Events =
   bind: (ev, callback) ->
     evs   = ev.split(' ')
@@ -189,12 +194,21 @@ class Model extends Module
 
   @all: ->
     @cloneArray(@records)
+    
+  @slice: (begin = 0, end)->
+    @cloneArray(@records.slice(begin, end))
 
-  @first: ->
-    @records[0]?.clone()
+  @first: (end = 1)->
+    if end > 1
+      @cloneArray(@records.slice(0, end))
+    else
+      @records[0]?.clone()
 
-  @last: ->
-    @records[@records.length - 1]?.clone()
+  @last: (begin)->
+    if typeof begin is 'number'
+      @cloneArray(@records.slice(-begin))
+    else
+      @records[@records.length - 1]?.clone()
 
   @count: ->
     @records.length
@@ -296,7 +310,7 @@ class Model extends Module
 
   eql: (rec) ->
     !!(rec and rec.constructor is @constructor and
-        (rec.cid is @cid) or (rec.id and rec.id is @id))
+        ((rec.cid is @cid) or (rec.id and rec.id is @id)))
 
   save: (options = {}) ->
     unless options.validate is false
@@ -330,7 +344,7 @@ class Model extends Module
     return if id is @id
     records = @constructor.irecords
     records[id] = records[@id]
-    delete records[@id]
+    delete records[@id] unless @cid is @id
     @id = id
     @save()
 
@@ -606,7 +620,7 @@ makeArray = (args) ->
 Spine = @Spine   = {}
 module?.exports  = Spine
 
-Spine.version    = '1.2.0'
+Spine.version    = '1.2.2'
 Spine.isArray    = isArray
 Spine.isBlank    = isBlank
 Spine.$          = $
