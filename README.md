@@ -75,7 +75,7 @@ This generator creates a blank Spine view `app/assets/javascripts/app/views/user
 The generator will create views in `hamljs`, `eco` or `ejs` format, depending on the gems availale:
 
 1. [eco](https://github.com/sstephenson/eco) - will use ECO templates
-2. [rub-haml-js](https://github.com/dnagir/ruby-haml-js) - will use HAMLJS templates
+2. [ruby-haml-js](https://github.com/dnagir/ruby-haml-js) - will use HAMLJS templates
 3. otherwise, EJS templates will be used
 
 ## Example Usage
