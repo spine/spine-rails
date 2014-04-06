@@ -1,4 +1,4 @@
-TAG=v1.2.2
+TAG=v1.3.0
 FILES=( ajax list local manager relation route )
 curl -s -o vendor/assets/javascripts/spine.coffee https://raw.github.com/spine/spine/$TAG/src/spine.coffee
 
