@@ -1,6 +1,4 @@
 Spine   = @Spine or require('spine')
-isArray = Spine.isArray
-require = @require or ((value) -> eval(value))
 
 class Collection extends Spine.Module
   constructor: (options = {}) ->
@@ -43,7 +41,7 @@ class Collection extends Spine.Module
       for match, i in @model.records when match.id is record.id
         @model.records.splice(i, 1)
         break
-    values = [values] unless isArray(values)
+    values = [values] unless Array.isArray(values)
     for record in values
       record.newRecord = false
       record[@fkey] = @record.id
@@ -70,11 +68,8 @@ class Instance extends Spine.Module
     for key, value of options
       @[key] = value
 
-  exists: ->
-    return if @record[@fkey] then @model.exists(@record[@fkey]) else false
-
   find: ->
-    return @model.find(@record[@fkey])
+    @model.find(@record[@fkey])
 
   update: (value) ->
     return this unless value?
@@ -108,11 +103,17 @@ underscore = (str) ->
   str.replace(/::/g, '/')
      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
      .replace(/([a-z\d])([A-Z])/g, '$1_$2')
-     .replace(/-/g, '_')
+     .replace(/(-|\.)/g, '_')
      .toLowerCase()
 
+requireModel = (model) ->
+  if typeof model is 'string'
+    require?(model) or eval(model)
+  else
+    model
+
 association = (name, model, record, fkey, Ctor) ->
-  model = require(model) if typeof model is 'string'
+  model = requireModel(model) if typeof model is 'string'
   new Ctor(name: name, model: model, record: record, fkey: fkey)
 
 Spine.Model.extend
